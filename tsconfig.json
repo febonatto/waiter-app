@@ -23,7 +23,8 @@
     /* Paths */
     "baseUrl": ".",
     "paths": {
-      "@views/*": ["./src/views/*"]
+      "@views/*": ["./src/views/*"],
+      "@app/*": ["./src/app/*"]
     }
   },
   "include": ["src"],
