@@ -1,5 +1,6 @@
 import '@views/styles/globals.css';
+import { Home } from '@views/pages/Home';
 
 export default function App() {
-  return <h1>App works</h1>;
+  return <Home />;
 }
