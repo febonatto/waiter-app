@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Bell,
   CirclePlus,
@@ -9,9 +10,18 @@ import {
 import { categories } from '@app/mocks/categories';
 import { products } from '@app/mocks/products';
 
+import { cn } from '@app/lib/utils';
 import { formatCurrency } from '@app/lib/utils';
 
 export function Home() {
+  const [selectedCategory, setSelectedCategory] = useState('');
+
+  function handleSelectedCategory(categoryId: string): void {
+    setSelectedCategory((prevState) =>
+      prevState === categoryId ? '' : categoryId,
+    );
+  }
+
   return (
     <div className="flex flex-col h-dvh">
       <header className="h-20 flex justify-between items-center px-6">
@@ -28,20 +38,28 @@ export function Home() {
       </header>
 
       <div className="h-[72px] flex px-2 gap-2 items-center overflow-x-scroll mb-4">
-        {categories.map((category) => (
-          <button
-            key={category._id}
-            type="button"
-            className="flex flex-col gap-2 items-center min-w-[74px]"
-          >
-            <div className="w-10 h-10 rounded-full flex items-center justify-center shadow-lg">
-              <span className="text-sm">{category.icon}</span>
-            </div>
-            <span className="font-medium text-xs text-stone-800">
-              {category.name}
-            </span>
-          </button>
-        ))}
+        {categories.map((category) => {
+          const isSelectedCategory = category._id === selectedCategory;
+
+          return (
+            <button
+              key={category._id}
+              type="button"
+              className={cn(
+                'flex flex-col gap-2 items-center min-w-[74px]',
+                !!selectedCategory && !isSelectedCategory && 'opacity-40',
+              )}
+              onClick={() => handleSelectedCategory(category._id)}
+            >
+              <div className="w-10 h-10 rounded-full flex items-center justify-center shadow-lg">
+                <span className="text-sm">{category.icon}</span>
+              </div>
+              <span className="font-medium text-xs text-stone-800">
+                {category.name}
+              </span>
+            </button>
+          );
+        })}
       </div>
 
       <div className="flex-1 flex flex-col gap-4 overflow-y-scroll pb-4">
