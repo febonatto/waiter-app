@@ -1,17 +1,12 @@
 import { useState } from 'react';
-import {
-  Bell,
-  CirclePlus,
-  CircleUserRoundIcon,
-  HomeIcon,
-  NotepadText,
-} from 'lucide-react';
+import { Bell, CirclePlus } from 'lucide-react';
 
 import { categories } from '@app/mocks/categories';
 import { products } from '@app/mocks/products';
 
 import { cn } from '@app/lib/utils';
 import { formatCurrency } from '@app/lib/utils';
+import { Menu } from '@views/components/Menu';
 
 export function Home() {
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -92,23 +87,7 @@ export function Home() {
         ))}
       </div>
 
-      <div className="h-20 flex justify-between px-6">
-        <div className="flex flex-col gap-1 justify-center items-center">
-          <HomeIcon size={20} strokeWidth={1.5} />
-          <span className="text-xs">Home</span>
-          <div className="w-6 h-[1px] bg-primary"></div>
-        </div>
-        <div className="flex flex-col gap-1 justify-center items-center">
-          <NotepadText size={20} strokeWidth={1.5} />
-          <span className="text-xs">Pedidos</span>
-          <div className="w-6 h-[1px] bg-primary"></div>
-        </div>
-        <div className="flex flex-col gap-1 justify-center items-center">
-          <CircleUserRoundIcon size={20} strokeWidth={1.5} />
-          <span className="text-xs">Meu perfil</span>
-          <div className="w-6 h-[1px] bg-primary"></div>
-        </div>
-      </div>
+      <Menu />
     </div>
   );
 }
