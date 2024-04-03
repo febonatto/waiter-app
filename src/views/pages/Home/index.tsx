@@ -1,15 +1,27 @@
 import { useState } from 'react';
-import { Bell, CirclePlus } from 'lucide-react';
+import { CirclePlus } from 'lucide-react';
+
+import { Product } from '@app/entities/Product';
 
 import { categories } from '@app/mocks/categories';
 import { products } from '@app/mocks/products';
 
 import { cn } from '@app/lib/utils';
 import { formatCurrency } from '@app/lib/utils';
+
 import { Menu } from '@views/components/Menu';
 
+import { TableModal } from './components/TableModal';
+import { Header } from './components/Header';
+
 export function Home() {
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [isTableModalOpen, setIsTableModalOpen] = useState<boolean>(false);
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [selectedTable, setSelectedTable] = useState<number | null>(null);
+
+  function handleOpenTableModal(): void {
+    setIsTableModalOpen(true);
+  }
 
   function handleSelectedCategory(categoryId: string): void {
     setSelectedCategory((prevState) =>
@@ -17,20 +29,36 @@ export function Home() {
     );
   }
 
+  function handleStartOrder(table: number): void {
+    setSelectedTable(table);
+    setIsTableModalOpen(false);
+  }
+
+  function handleCancelOrder(): void {
+    setSelectedTable(null);
+  }
+
+  function handleAddToCart(product: Product): void {
+    if (!selectedTable) {
+      handleOpenTableModal();
+    }
+
+    console.log(product);
+  }
+
   return (
     <div className="flex flex-col h-dvh">
-      <header className="h-20 flex justify-between items-center px-6">
-        <div className="text-stone-800">
-          <span className="text-xs opacity-80">Bem-vindo(a) ao</span>
-          <h1 className="text-lg font-bold leading-5">
-            WAITER
-            <span className="font-normal opacity-80">APP</span>
-          </h1>
-        </div>
-        <div className="p-3 rounded-full shadow-lg">
-          <Bell size={16} strokeWidth={1.5} />
-        </div>
-      </header>
+      <TableModal
+        isTableModalOpen={isTableModalOpen}
+        handleStartOrder={handleStartOrder}
+        handleCloseTableModal={() => setIsTableModalOpen(false)}
+      />
+
+      <Header
+        selectedTable={selectedTable}
+        handleOpenTableModal={handleOpenTableModal}
+        handleCancelOrder={handleCancelOrder}
+      />
 
       <div className="h-[72px] flex px-2 gap-2 items-center overflow-x-scroll mb-4">
         {categories.map((category) => {
@@ -68,11 +96,15 @@ export function Home() {
               />
             </div>
             <div className="flex flex-col justify-between text-stone-800">
-              <strong className="text-sm font-medium">{product.name}</strong>
-              <p className="line-clamp-3 leading-tight opacity-80 text-xs">
+              <strong className="text-sm font-bold">{product.name}</strong>
+              <p className="line-clamp-3 leading-tight opacity-40 text-xs">
                 {product.description}
               </p>
-              <div className="flex justify-between items-center">
+              <button
+                type="button"
+                className="flex justify-between items-center"
+                onClick={() => handleAddToCart(product)}
+              >
                 <span className="font-medium text-sm">
                   {formatCurrency(product.price)}
                 </span>
@@ -81,7 +113,7 @@ export function Home() {
                   strokeWidth={1.5}
                   className="text-primary"
                 />
-              </div>
+              </button>
             </div>
           </div>
         ))}
