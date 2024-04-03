@@ -2,6 +2,7 @@ import { ChangeEvent, useState } from 'react';
 import { X } from 'lucide-react';
 
 import { Dialog, DialogContent } from '@views/components/ui/dialog';
+import { Button } from '@views/components/Button';
 
 interface ITableModal {
   isTableModalOpen: boolean;
@@ -47,13 +48,9 @@ export function TableModal({
           className="border rounded-sm px-2 py-3 text-xs"
           onChange={handleChangeTable}
         />
-        <button
-          type="button"
-          className="bg-primary rounded-md py-2 text-white text-sm"
-          onClick={handleSave}
-        >
+        <Button type="button" onClick={handleSave}>
           Salvar
-        </button>
+        </Button>
       </DialogContent>
     </Dialog>
   );
