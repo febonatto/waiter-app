@@ -1,54 +1,42 @@
-import { Bell } from 'lucide-react';
+import { Ban, Bell, Play } from 'lucide-react';
+
+import { Button } from '@views/components/Button';
 
 interface IHeader {
   selectedTable: number | null;
   handleOpenTableModal(): void;
   handleCancelOrder(): void;
 }
-export function Header({
-  selectedTable,
-  handleOpenTableModal,
-  handleCancelOrder,
-}: IHeader) {
+export function Header({ selectedTable, handleOpenTableModal, handleCancelOrder }: IHeader) {
   return (
     <header className="h-24 px-6">
       {!selectedTable ? (
-        <div className="h-full flex justify-between items-center">
-          <div className="text-stone-800">
-            <span className="text-xs opacity-40 mb-1 block">
-              Bem-vindo(a) ao
-            </span>
-            <h1 className="text-lg font-bold">
+        <div className="h-full flex justify-between items-center text-stone-600">
+          <div>
+            <span className="text-xs opacity-60">Bem-vindo(a) ao</span>
+            <h1 className="text-xl font-bold leading-tight">
               WAITER
-              <span className="font-normal opacity-40">APP</span>
+              <span className="font-medium opacity-60">APP</span>
             </h1>
-            <button
-              type="button"
-              className="text-primary text-sm"
-              onClick={handleOpenTableModal}
-            >
-              Iniciar um pedido
-            </button>
           </div>
-          <div className="p-3 rounded-full shadow-lg">
-            <Bell size={16} strokeWidth={1.5} />
+          <div className="flex items-center justify-center gap-4">
+            <Button type="button" className="p-3 rounded-full shadow-lg" onClick={handleOpenTableModal}>
+              <Play size={16} strokeWidth={1.5} />
+            </Button>
+            <Button type="button" typeOf="ghost" className="p-3 rounded-full shadow-lg">
+              <Bell size={16} strokeWidth={1.5} />
+            </Button>
           </div>
         </div>
       ) : (
-        <div className="h-full flex justify-center items-center flex-col gap-2">
-          <div className="w-full flex justify-between">
-            <span className="font-medium text-lg">Pedido</span>
-            <button
-              type="button"
-              className="text-sm text-primary"
-              onClick={handleCancelOrder}
-            >
-              Cancelar pedido
-            </button>
+        <div className="h-full flex flex-col justify-center gap-1 text-stone-600">
+          <strong className="font-medium text-sm">Pedido em andamento</strong>
+          <div className="flex items-center gap-4">
+            <span className="border rounded-sm px-2 py-3 text-xs opacity-60 flex-1">Mesa {selectedTable}</span>
+            <Button type="button" className="p-3 rounded-full shadow-lg" onClick={handleCancelOrder}>
+              <Ban size={16} strokeWidth={1.5} />
+            </Button>
           </div>
-          <span className="border rounded-sm px-2 py-3 text-xs w-full text-stone-800/60">
-            Mesa {selectedTable}
-          </span>
         </div>
       )}
     </header>
